@@ -6,7 +6,18 @@
   </head>
   <body style="margin: 0; padding: 0;">
     <script>
-      // ✅ Hàm khởi tạo Tova
+      function waitAndShow(retry = 0) {
+        if (window.tova && typeof tova.show === "function") {
+          console.log("✅ [Tova] SDK sẵn sàng, gọi tova.show()");
+          tova.show();
+        } else if (retry < 10) {
+          console.log("⏳ [Tova] Chưa sẵn sàng, thử lại...", retry);
+          setTimeout(() => waitAndShow(retry + 1), 300);
+        } else {
+          console.error("❌ [Tova] Không thể show sau 10 lần thử");
+        }
+      }
+
       function initTova(userId, name) {
         console.log("🚀 initTova called", userId, name);
         tova.init({
@@ -22,22 +33,15 @@
           }
         });
 
-        // ✅ Tự động hiện khung chat sau khi init
-        setTimeout(() => {
-          console.log("✅ tova.show() auto-triggered");
-          tova.show();
-        }, 2000);
+        // Gọi show khi SDK thực sự sẵn sàng
+        waitAndShow();
       }
 
-      // ✅ SDK đã load xong
       window.tovaAsyncInit = function () {
         console.log("✅ Tova SDK loaded, auto-calling init");
-
-        // 🧑‍💻 Bạn có thể chỉnh user_id / name ở đây
         initTova("flutter_user_001", "Flutter User");
       };
 
-      // ✅ Inject script SDK Tova
       (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
