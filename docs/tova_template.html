@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><meta charset="UTF-8"><title>Tova Chat</title></head>
-  <body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tova Chat Auto</title>
+  </head>
+  <body style="margin: 0; padding: 0;">
     <script>
-      // Hàm được gọi từ Flutter để truyền dữ liệu
+      // ✅ Hàm khởi tạo Tova
       function initTova(userId, name) {
         console.log("🚀 initTova called", userId, name);
         tova.init({
@@ -19,27 +22,31 @@
           }
         });
 
-        // ✅ Tự động mở khung chat sau khi init
+        // ✅ Tự động hiện khung chat sau khi init
         setTimeout(() => {
           console.log("✅ tova.show() auto-triggered");
           tova.show();
-        }, 200); // Delay nhẹ để chắc chắn SDK đã ready
+        }, 200);
       }
 
-      // Tải SDK
-     window.tovaAsyncInit = function () {
-      console.log("✅ SDK loaded");
-      initTova("flutter_user_001", "Flutter User");
-};
+      // ✅ SDK đã load xong
+      window.tovaAsyncInit = function () {
+        console.log("✅ Tova SDK loaded, auto-calling init");
 
-      (function(d, s, id) {
+        // 🧑‍💻 Bạn có thể chỉnh user_id / name ở đây
+        initTova("flutter_user_001", "Flutter User");
+      };
+
+      // ✅ Inject script SDK Tova
+      (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
+        js = d.createElement(s);
+        js.id = id;
         js.src = "https://agents.fpt.ai/connect/sdk.js";
         js.onload = window.tovaAsyncInit;
         fjs.parentNode.insertBefore(js, fjs);
-      }(document, "script", "tova-jssdk"));
+      })(document, "script", "tova-jssdk");
     </script>
   </body>
 </html>
