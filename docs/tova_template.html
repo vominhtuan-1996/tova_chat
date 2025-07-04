@@ -6,20 +6,36 @@
   </head>
   <body style="margin: 0; padding: 0;">
     <script>
+      // Mô phỏng click vào nút bot sau khi SDK đã init xong
+      function tryClickBotBubble(retry = 0) {
+        const bubble = document.querySelector('.tova__launcher');
+        if (bubble) {
+          console.log("✅ Tìm thấy nút bot, đang click...");
+          bubble.click();
+        } else if (retry < 10) {
+          console.log("⏳ Đang chờ nút bot xuất hiện...");
+          setTimeout(() => tryClickBotBubble(retry + 1), 300);
+        } else {
+          console.warn("❌ Không tìm thấy nút bot sau nhiều lần thử.");
+        }
+      }
+
       function waitAndShow(retry = 0) {
         if (window.tova && typeof tova.show === "function") {
-          console.log("✅ Tova ready, show chat");
+          console.log("✅ Tova sẵn sàng, gọi show");
           tova.show();
+          // ✅ Gọi click vào nút bot sau khi show
+          setTimeout(() => tryClickBotBubble(), 1000);
         } else if (retry < 10) {
-          console.log("⏳ Waiting for Tova SDK...", retry);
+          console.log("⏳ Chờ SDK sẵn sàng...", retry);
           setTimeout(() => waitAndShow(retry + 1), 300);
         } else {
-          console.error("❌ Failed to show Tova chat");
+          console.error("❌ Không thể show sau nhiều lần thử");
         }
       }
 
       function initTova(userId, name) {
-        console.log("🚀 initTova", userId, name);
+        console.log("🚀 Gọi initTova", userId, name);
         tova.init({
           tenant_id: "01JNJVV5TX8QX5R521SDAA8SAW",
           bot_code: "01JWZPK62975PSACJ3GTDPADCS",
@@ -30,7 +46,7 @@
       }
 
       window.tovaAsyncInit = function () {
-        console.log("✅ Tova SDK loaded");
+        console.log("✅ SDK đã load, gọi initTova");
         initTova("flutter_user_001", "Flutter User");
       };
 
