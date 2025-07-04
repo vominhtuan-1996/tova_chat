@@ -1,27 +1,46 @@
-<script>
-        window.tovaAsyncInit = function () {
-            console.log("✅ SDK loaded");
-            tova.init({
-                tenant_id: "01JNJVV5TX8QX5R521SDAA8SAW",
-                bot_code: "01JWZPK62975PSACJ3GTDPADCS",
-                ui_config: { position: "left", hide_greeting: false },
-                extra: { user_id: "test_user", name: "Tester" }
-            });
-            setTimeout(() => { tova.show(); }, 500);
-        };
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"><title>Tova Chat</title></head>
+  <body>
+    <script>
+      // Hàm được gọi từ Flutter để truyền dữ liệu
+      function initTova(userId, name) {
+        console.log("🚀 initTova called", userId, name);
+        tova.init({
+          tenant_id: "01JNJVV5TX8QX5R521SDAA8SAW",
+          bot_code: "01JWZPK62975PSACJ3GTDPADCS",
+          ui_config: {
+            position: "right",
+            hide_greeting: false
+          },
+          extra: {
+            user_id: userId,
+            name: name
+          }
+        });
 
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            js = d.createElement(s); js.id = id;
-            js.src = "https://agents.fpt.ai/connect/sdk.js";
-            js.onload = window.tovaAsyncInit;
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, "script", "tova-jssdk"));
+        // ✅ Tự động mở khung chat sau khi init
+        setTimeout(() => {
+          console.log("✅ tova.show() auto-triggered");
+          tova.show();
+        }, 200); // Delay nhẹ để chắc chắn SDK đã ready
+      }
 
-      function updateChatbotData(extraData) {
-  if (window.tova && tova.updateExtra) {
-    tova.updateExtra(extraData);
-    console.log("✅ Updated extra:", extraData);
-  }
-}  
+      // Tải SDK
+      window.tovaAsyncInit = function () {
+        console.log("✅ Tova SDK loaded");
+        // Optional: gọi initTova luôn ở đây nếu bạn muốn auto
+        // initTova('user_id', 'name'); 
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://agents.fpt.ai/connect/sdk.js";
+        js.onload = window.tovaAsyncInit;
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, "script", "tova-jssdk"));
     </script>
+  </body>
+</html>
