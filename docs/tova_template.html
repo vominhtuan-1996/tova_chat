@@ -27,11 +27,10 @@
       }
 
       // Tải SDK
-      window.tovaAsyncInit = function () {
-        console.log("✅ Tova SDK loaded");
-        // Optional: gọi initTova luôn ở đây nếu bạn muốn auto
-        // initTova('user_id', 'name'); 
-      };
+     window.tovaAsyncInit = function () {
+      console.log("✅ SDK loaded");
+      initTova("flutter_user_001", "Flutter User");
+};
 
       (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
