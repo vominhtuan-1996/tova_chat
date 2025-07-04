@@ -17,4 +17,11 @@
             js.onload = window.tovaAsyncInit;
             fjs.parentNode.insertBefore(js, fjs);
         }(document, "script", "tova-jssdk"));
+
+      function updateChatbotData(extraData) {
+  if (window.tova && tova.updateExtra) {
+    tova.updateExtra(extraData);
+    console.log("✅ Updated extra:", extraData);
+  }
+}  
     </script>
